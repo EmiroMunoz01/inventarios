@@ -3,8 +3,10 @@ package em.inventarios.controlador;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,5 +36,14 @@ public class ProductoControlador {
     public Producto agregarProducto(@RequestBody Producto producto) {
         return this.productoServicio.guardarProducto(producto);
     }
+    
 
+    //si encontramos el producto tendremos la respuesta correcta
+    @GetMapping("/productos/{id}")
+    public ResponseEntity<Producto> obtenerProductoPorId(@PathVariable int id) {
+        Producto producto = this.productoServicio.buscarProductoPorId(id);
+        return ResponseEntity.ok(producto);
+    }
 }
+
+
