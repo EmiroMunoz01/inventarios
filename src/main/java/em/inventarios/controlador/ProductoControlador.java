@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import em.inventarios.excepcion.RecursoNoEncontradoExcepcion;
 import em.inventarios.modelo.Producto;
 import em.inventarios.servicio.ProductoServicio;
 
@@ -36,14 +37,18 @@ public class ProductoControlador {
     public Producto agregarProducto(@RequestBody Producto producto) {
         return this.productoServicio.guardarProducto(producto);
     }
-    
 
-    //si encontramos el producto tendremos la respuesta correcta
+    // si encontramos el producto tendremos la respuesta correcta
     @GetMapping("/productos/{id}")
     public ResponseEntity<Producto> obtenerProductoPorId(@PathVariable int id) {
+        
         Producto producto = this.productoServicio.buscarProductoPorId(id);
-        return ResponseEntity.ok(producto);
+
+        if (producto != null) {
+            return ResponseEntity.ok(producto);
+        } else {
+            throw new RecursoNoEncontradoExcepcion("No se encontro el id " + id);
+        }
+
     }
 }
-
-
